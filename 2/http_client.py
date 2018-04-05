@@ -4,6 +4,7 @@ import re
 from urllib.parse import urlparse
 from datetime import datetime
 from mi_sock import *
+from connect import client
 
 # El programa recibe como argumento la url completa
 # ejemplo:
@@ -19,18 +20,12 @@ CHARSET = 'iso-8859-1'
 RECBYTES = 1024
 LOG_FILE = 'headers.log'
 
-def conectar(host, port):
-	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	s.connect((host, port))
-	print('Conectado a: %s:%i' % (host, port))
-	return s
-
 def requerir(url, proxy = ''):
 	host, port, recurso = procesar_entrada(url, proxy)
 
 	mensaje = armar_mensaje(host, recurso)
 
-	with conectar(host, port) as sock:
+	with client(host, port) as sock:
 		mi_send(sock, mensaje.encode())
 
 		received = ''
@@ -44,23 +39,12 @@ def requerir(url, proxy = ''):
 
 		dict_header = procesar_header(header)
 
-		print(dict_header)
-
 		# Si queda payload por recuperar
 		cont_len = dict_header.get('Content-Length', None)
 		if cont_len:
 			cont_len = int(cont_len)
 			while len(body) < cont_len:
 				body += mi_recv(sock, RECBYTES).decode(CHARSET)
-		else:
-			# Ciertos sitios no envían Content-Length
-			cont_typ = dict_header.get('Content-Type', None)
-			if cont_typ:
-				# Si es html puedo descargar hasta encontrar el tag de cierre
-				if cont_typ.find('text/html') > -1:
-					while body.find('</html>') <= -1:
-						body += mi_recv(sock, RECBYTES).decode(CHARSET)
-
 	
 	# Cerrar socket
 

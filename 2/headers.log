@@ -842,3 +842,131 @@ Content-Type: text/html; charset=UTF-8
 
 ----------------------------------------
 
+[2018-04-05 14:29:49.966131]
+[Solicitud]
+GET / HTTP/1.1
+Host: www.mediafire.com
+
+[Respuesta]
+HTTP/1.1 301 Moved Permanently
+Date: Thu, 05 Apr 2018 17:29:49 GMT
+Content-Type: text/html
+Transfer-Encoding: chunked
+Connection: keep-alive
+Set-Cookie: __cfduid=d0d221c41e00b1f59a36304d45e9399461522949389; expires=Fri, 05-Apr-19 17:29:49 GMT; path=/; domain=.mediafire.com; HttpOnly
+Set-Cookie: ukey=dadc4g95s87gc0duhadnmi5m13jzda0g; expires=Thu, 05-Mar-2020 17:29:49 GMT; Max-Age=60480000; path=/; domain=.mediafire.com; httponly
+Expires: 0
+Pragma: no-cache
+Location: https://www.mediafire.com/
+Cache-Control: no-cache, no-store, must-revalidate, max-age=0
+Cache-Control: post-check=0, pre-check=0
+Access-Control-Allow-Origin: *
+Server: cloudflare
+CF-RAY: 406dbd34e06167bb-EZE
+
+----------------------------------------
+
+[2018-04-05 14:31:45.025566]
+[Solicitud]
+GET / HTTP/1.1
+Host: www.mediafire.com
+
+[Respuesta]
+HTTP/1.1 301 Moved Permanently
+Date: Thu, 05 Apr 2018 17:31:45 GMT
+Content-Type: text/html
+Transfer-Encoding: chunked
+Connection: keep-alive
+Set-Cookie: __cfduid=daa999677341733945a10c2b25cccaa241522949504; expires=Fri, 05-Apr-19 17:31:44 GMT; path=/; domain=.mediafire.com; HttpOnly
+Set-Cookie: ukey=m1ij2u3mr8nd74145x952s3261ta5tmu; expires=Thu, 05-Mar-2020 17:31:44 GMT; Max-Age=60480000; path=/; domain=.mediafire.com; httponly
+Expires: 0
+Pragma: no-cache
+Location: https://www.mediafire.com/
+Cache-Control: no-cache, no-store, must-revalidate, max-age=0
+Cache-Control: post-check=0, pre-check=0
+Access-Control-Allow-Origin: *
+Server: cloudflare
+CF-RAY: 406dc00431fb681b-EZE
+
+----------------------------------------
+
+[2018-04-05 14:31:45.057359]
+[Solicitud]
+GET / HTTP/1.1
+Host: www.mediafire.com
+
+[Respuesta]
+HTTP/1.1 400 Bad Request
+Server: cloudflare
+Date: Thu, 05 Apr 2018 17:31:45 GMT
+Content-Type: text/html
+Content-Length: 269
+Connection: close
+CF-RAY: -
+
+----------------------------------------
+
+[2018-04-05 14:32:10.199825]
+[Solicitud]
+GET / HTTP/1.1
+Host: www.mediafire.com
+
+[Respuesta]
+HTTP/1.1 301 Moved Permanently
+Date: Thu, 05 Apr 2018 17:32:10 GMT
+Content-Type: text/html
+Transfer-Encoding: chunked
+Connection: keep-alive
+Set-Cookie: __cfduid=d1290ccf94331e0a29f259bdfdf1d79e21522949529; expires=Fri, 05-Apr-19 17:32:09 GMT; path=/; domain=.mediafire.com; HttpOnly
+Set-Cookie: ukey=fgbz95a1ndm5xquuuagke4rfrbtwsvbg; expires=Thu, 05-Mar-2020 17:32:10 GMT; Max-Age=60480000; path=/; domain=.mediafire.com; httponly
+Expires: 0
+Pragma: no-cache
+Location: https://www.mediafire.com/
+Cache-Control: no-cache, no-store, must-revalidate, max-age=0
+Cache-Control: post-check=0, pre-check=0
+Access-Control-Allow-Origin: *
+Server: cloudflare
+CF-RAY: 406dc0a150eb684b-EZE
+
+----------------------------------------
+
+[2018-04-05 14:32:36.587233]
+[Solicitud]
+GET / HTTP/1.1
+Host: www.mediafire.com
+
+[Respuesta]
+HTTP/1.1 301 Moved Permanently
+Date: Thu, 05 Apr 2018 17:32:36 GMT
+Content-Type: text/html
+Transfer-Encoding: chunked
+Connection: keep-alive
+Set-Cookie: __cfduid=dcf5f68e74e010cacf3adf31213d2102d1522949556; expires=Fri, 05-Apr-19 17:32:36 GMT; path=/; domain=.mediafire.com; HttpOnly
+Set-Cookie: ukey=f1r8j0p8vjviam6nl1x98mm8ipigjgy4; expires=Thu, 05-Mar-2020 17:32:36 GMT; Max-Age=60480000; path=/; domain=.mediafire.com; httponly
+Expires: 0
+Pragma: no-cache
+Location: https://www.mediafire.com/
+Cache-Control: no-cache, no-store, must-revalidate, max-age=0
+Cache-Control: post-check=0, pre-check=0
+Access-Control-Allow-Origin: *
+Server: cloudflare
+CF-RAY: 406dc146441d6827-EZE
+
+----------------------------------------
+
+[2018-04-05 14:32:36.818588]
+[Solicitud]
+GET / HTTP/1.1
+Host: www.mediafire.com
+
+[Respuesta]
+HTTP/1.1 400 Bad Request
+Server: cloudflare
+Date: Thu, 05 Apr 2018 17:32:36 GMT
+Content-Type: text/html
+Content-Length: 269
+Connection: close
+CF-RAY: -
+
+----------------------------------------
+
