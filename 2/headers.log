@@ -1,0 +1,68 @@
+[2018-04-05 10:37:00.289596]
+[Mensaje]
+GET /wiki/User_blog:AnnaBannana/Elona_Custom HTTP/1.1
+Host: elona.wikia.com
+
+[Header]
+HTTP/1.1 200 OK
+Server: Apache
+X-Content-Type-Options: nosniff
+Content-language: en
+X-Backend-Response-Time: 0.125
+X-Trace-Id: d2bc7338-b12d-4db2-8fff-bd72613eba8a
+X-Span-Id: 2e360671-bbde-462a-9e10-e3a3c8776048
+ETag: "20170602032001-1522931783"
+Last-Modified: Fri, 02 Jun 2017 03:20:01 GMT
+Content-Type: text/html; charset=utf-8
+X-Cacheable: YES
+Content-Length: 211059
+Accept-Ranges: bytes
+Date: Thu, 05 Apr 2018 13:37:00 GMT
+Age: 1251
+Connection: keep-alive
+X-Served-By: ap-s183, cache-wk-sjc3160-WIKIA, cache-scl19423-SCL
+X-Cache: ORIGIN, MISS, HIT
+X-Cache-Hits: ORIGIN, 0, 3
+X-Timer: S1522935420.280953,VS0,VE0
+Vary: Accept-Encoding,Cookie
+Set-Cookie: wikia_beacon_id=JtykIQsOIr; domain=.wikia.com; path=/; expires=Tue, 02 Oct 2018 13:37:00 GMT;
+Set-Cookie: wikia_session_id=wNQnjLXYCh; domain=.wikia.com; path=/; expires=Thu, 05 Apr 2018 14:07:00 GMT;
+Set-Cookie: Geo={%22region%22:%22B%22%2C%22country%22:%22AR%22%2C%22continent%22:%22SA%22}; path=/
+Cache-Control: private, s-maxage=0, max-age=0, must-revalidate
+
+----------------------------------------
+
+[2018-04-05 10:37:02.469051]
+[Mensaje]
+GET /wiki/User_blog:AnnaBannana/Elona_Custom HTTP/1.1
+Host: elona.wikia.com
+
+[Header]
+HTTP/1.1 200 OK
+Server: Apache
+X-Content-Type-Options: nosniff
+Content-language: en
+X-Backend-Response-Time: 0.125
+X-Trace-Id: d2bc7338-b12d-4db2-8fff-bd72613eba8a
+X-Span-Id: 2e360671-bbde-462a-9e10-e3a3c8776048
+ETag: "20170602032001-1522931783"
+Last-Modified: Fri, 02 Jun 2017 03:20:01 GMT
+Content-Type: text/html; charset=utf-8
+X-Cacheable: YES
+Content-Length: 211059
+Accept-Ranges: bytes
+Date: Thu, 05 Apr 2018 13:37:02 GMT
+Age: 1253
+Connection: keep-alive
+X-Served-By: ap-s183, cache-wk-sjc3160-WIKIA, cache-scl19423-SCL
+X-Cache: ORIGIN, MISS, HIT
+X-Cache-Hits: ORIGIN, 0, 4
+X-Timer: S1522935422.459788,VS0,VE0
+Vary: Accept-Encoding,Cookie
+Set-Cookie: wikia_beacon_id=tPGXhKyocZ; domain=.wikia.com; path=/; expires=Tue, 02 Oct 2018 13:37:02 GMT;
+Set-Cookie: wikia_session_id=Pd7zyt4x7E; domain=.wikia.com; path=/; expires=Thu, 05 Apr 2018 14:07:02 GMT;
+Set-Cookie: Geo={%22region%22:%22B%22%2C%22country%22:%22AR%22%2C%22continent%22:%22SA%22}; path=/
+Cache-Control: private, s-maxage=0, max-age=0, must-revalidate
+
+----------------------------------------
+

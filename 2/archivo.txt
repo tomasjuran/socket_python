@@ -1,2 +1,0 @@
-Content-Length: 2008
-Location: http://www.example.com/index.html

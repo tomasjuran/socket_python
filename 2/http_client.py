@@ -1,11 +1,12 @@
 import sys
 import re
 import socket
+from datetime import datetime
 from mi_sock import *
 
 # El programa recibe como argumento la url completa
 # ejemplo:
-# $ python3 http_client.py https://192.168.0.1/index.html
+# $ python3 http_client.py http://192.168.0.1/index.html
 #
 # Para utilizar un proxy, agregue "via" <direccion proxy> al final
 # ejemplo:
@@ -15,6 +16,7 @@ HTTP_PORT = 80
 HTTPS_PORT = 443
 CHARSET = 'iso-8859-1'
 RECBYTES = 1024
+LOG_FILE = 'headers.log'
 
 def conectar(host, port):
 	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -33,23 +35,25 @@ def requerir(url, proxy = ''):
 
 		received = ''
 		# Recuperar todo el header
-		while received.find(b'\r\n\r\n') < 0:
-			received += mi_recv(sock, RECBYTES)
+		while received.find('\r\n\r\n') < 0:
+			received += mi_recv(sock, RECBYTES).decode(CHARSET)
 		
-		(header, body) = received.decode(CHARSET).split('\r\n\r\n')
+		(header, body) = received.split('\r\n\r\n')
+
+		log_header(mensaje, header)
 
 		dict_header = procesar_header(header)
 
 		# Si queda payload por recuperar
 		cont_len = dict_header.get('Content-Length', None)
 		if cont_len != None:
+			cont_len = int(cont_len)
 			while len(body) < cont_len:
-				body += mi_recv(sock, RECBYTES).decode(CHARSET)
+				body += mi_recv(sock, RECBYTES).decode(CHARSET)		
 
 
-		
 
-		print(body.decode(CHARSET))
+		print(body)
 
 def procesar_entrada(url, proxy):
 	"""Devuelve el host, puerto y recurso extraídos de la url y el proxy"""
@@ -79,11 +83,20 @@ Host: ' + host + '\r\n\r\n'
 def procesar_header(header):
 	"""Devuelve un diccionario con campo:valor para cada campo del header"""
 	dict_header = {}
-	
 	for (field, value) in re.findall(r'(.+): (.+)', header):
 		dict_header[field] = value
-
 	return dict_header
+
+
+def log_header(mensaje, header):
+	"""Almacena los headers recibidos en un archivo de log"""
+	with open(LOG_FILE, 'a') as log:
+		log.write('[' + str(datetime.now()) + ']\r\n')
+		log.write('[Solicitud]\r\n')
+		log.write(mensaje)
+		log.write('[Respuesta]\r\n')
+		log.write(header + '\r\n\r\n')
+		log.write('----------------------------------------\r\n\r\n')
 
 
 if __name__ == '__main__':
