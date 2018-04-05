@@ -1,0 +1,4 @@
+*.pdf
+notas.txt
+py2/
+**/__pycache__/
