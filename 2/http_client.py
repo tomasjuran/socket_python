@@ -26,7 +26,6 @@ def conectar(host, port):
 	return s
 
 def requerir(url, proxy = ''):
-
 	host, port, recurso = procesar_entrada(url, proxy)
 
 	mensaje = armar_mensaje(host, recurso)
@@ -45,31 +44,44 @@ def requerir(url, proxy = ''):
 
 		dict_header = procesar_header(header)
 
-		# Si se está redireccionando
-		status_line = header.split('\r\n', 1)[0]
-		[status_code] = re.findall('\d{3}', status_line)
-		if int(status_code) in range(300, 399):
-			redir_url = dict_header.get('Location', None)
-			if redir_url:
-				print('Redirección a ' + redir_url)
-				requerir(redir_url, proxy)
-				return 0
-			else:
-				error = ('Se encontró la línea de estado\n'
-						 + status_line + '\ny se intentó una redirección,'
-						 + ' pero el header no contenía el campo "Location"')
-				raise Exception(error)
-
+		print(dict_header)
 
 		# Si queda payload por recuperar
 		cont_len = dict_header.get('Content-Length', None)
 		if cont_len:
 			cont_len = int(cont_len)
 			while len(body) < cont_len:
-				body += mi_recv(sock, RECBYTES).decode(CHARSET)		
+				body += mi_recv(sock, RECBYTES).decode(CHARSET)
+		else:
+			# Ciertos sitios no envían Content-Length
+			cont_typ = dict_header.get('Content-Type', None)
+			if cont_typ:
+				# Si es html puedo descargar hasta encontrar el tag de cierre
+				if cont_typ.find('text/html') > -1:
+					while body.find('</html>') <= -1:
+						body += mi_recv(sock, RECBYTES).decode(CHARSET)
 
-		# Mostrar el payload
-		print(body)
+	
+	# Cerrar socket
+
+	# Si se está redireccionando
+	status_line = header.split('\r\n', 1)[0]
+	[status_code] = re.findall('\d{3}', status_line)
+	if int(status_code) in range(300, 399):
+		redir_url = dict_header.get('Location', None)
+		if redir_url:
+			print('Redirección a ' + redir_url)
+			requerir(redir_url, proxy)
+			return 0
+		else:
+			error = ('Se encontró la línea de estado\n'
+					 + status_line + '\ny se intentó una redirección,'
+					 + ' pero el header no contenía el campo "Location"')
+			raise Exception(error)
+
+
+	# Mostrar el payload
+	print(body)
 
 
 
@@ -112,6 +124,8 @@ Host: ' + host + '\r\n\r\n'
 def procesar_header(header):
 	"""Devuelve un diccionario con campo:valor para cada campo del header"""
 	dict_header = {}
+	# Se agrega para que la expresión regular encuentre la última línea
+	header += '\r\n'
 	for (field, value) in re.findall(r'(.+): (.+)\r\n', header):
 		dict_header[field] = value
 	return dict_header
