@@ -33,23 +33,17 @@ Accept: text/html\r\n\r\n'
 
 	mi_send(sock, mensaje.encode())
 
-	received = mi_recv(sock, RECBYTES)
+	resp = mi_recv(sock, RECBYTES)
 	
-	while received.find(b'Content-Length:') < 0:
-		received += mi_recv(sock, RECBYTES)
-	ini = received.find(b'Content-Length:') + 16
+	while resp.find(b'</html>') == -1:
+		resp += mi_recv(sock, RECBYTES)
 	
-	while received[ini:].find(b'\r\n') < 0:
-		received += mi_recv(sock, RECBYTES)
-	fin = received[ini:].find(b'\r\n') + ini
-	
-	body_size = int(received[ini:fin].decode(CHARSET))
-	body = received[received.find(b'\r\n\r\n'):]
-	while len(body) < body_size:
-		body += mi_recv(sock, RECBYTES)
+	head_end = resp.find(b'\r\n\r\n')
+	header = resp[:head_end].decode(CHARSET)
+	body = resp[head_end:].decode(CHARSET)
 
-	print(body.decode(CHARSET))
-
+	print(header + '\n\n\nfin header')
+	print('\n' + body)
 
 
 
