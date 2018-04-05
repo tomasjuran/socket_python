@@ -1,63 +1,94 @@
 import sys
+import re
 import socket
 from mi_sock import *
 
-# El programa recibe como argumentos la dirección y el nombre del recurso
+# El programa recibe como argumento la url completa
 # ejemplo:
-# $ python3 http_client.py 192.168.0.1 /index.html
+# $ python3 http_client.py https://192.168.0.1/index.html
 #
 # Para utilizar un proxy, agregue "via" <direccion proxy> al final
 # ejemplo:
-# $ python3 http_client.py 192.168.0.1 /index.html via 10.0.0.1
+# $ python3 http_client.py http://192.168.0.1/index.html via 10.0.0.1:8080
 
 HTTP_PORT = 80
+HTTPS_PORT = 443
 CHARSET = 'iso-8859-1'
 RECBYTES = 1024
 
-def conectar(host):
+def conectar(host, port):
 	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	s.connect((host, HTTP_PORT))
-	print('Conectado a: %s:%i' % (host, HTTP_PORT))
+	s.connect((host, port))
+	print('Conectado a: %s:%i' % (host, port))
 	return s
 
-def requerir(direccion, recurso, proxy = ''):
-	if proxy:
-		sock = conectar(proxy)
-	else:
-		sock = conectar(direccion)
+def requerir(url, proxy = ''):
 
+	host, port, recurso = procesar_entrada(url, proxy)
+
+	mensaje = armar_mensaje(host, recurso)
+
+	with conectar(host, port) as sock:
+		mi_send(sock, mensaje.encode())
+
+		received = ''
+		# Recuperar todo el header
+		while received.find(b'\r\n\r\n') < 0:
+			received += mi_recv(sock, RECBYTES)
+		
+		(header, body) = received.decode(CHARSET).split('\r\n\r\n')
+
+		dict_header = procesar_header(header)
+
+		# Si queda payload por recuperar
+		cont_len = dict_header.get('Content-Length', None)
+		if cont_len != None:
+			while len(body) < cont_len:
+				body += mi_recv(sock, RECBYTES).decode(CHARSET)
+
+
+		
+
+		print(body.decode(CHARSET))
+
+def procesar_entrada(url, proxy):
+	"""Devuelve el host, puerto y recurso extraídos de la url y el proxy"""
+	if proxy:
+		[(host, port)] = re.findall(r'(.+?):(\d+)', proxy)
+		recurso = url
+	else:
+		[(proto, host, recurso)] = re.findall(r'(\w+)://(.+?)/(.+)', url)
+		if proto == 'https':
+			port = HTTPS_PORT
+		else:
+			port = HTTP_PORT
+
+	return (host, port, '/' + recurso)
+
+
+
+def armar_mensaje(host, recurso):
+	"""Arma el header de la solicitud HTTP"""
 	mensaje = '\
 GET ' + recurso + ' HTTP/1.1\r\n\
-Host: ' + direccion + '\r\n\
-Accept: text/html\r\n\r\n'
+Host: ' + host + '\r\n\r\n'
+	return mensaje
 
-	mi_send(sock, mensaje.encode())
 
-	received = mi_recv(sock, RECBYTES)
+
+def procesar_header(header):
+	"""Devuelve un diccionario con campo:valor para cada campo del header"""
+	dict_header = {}
 	
-	while received.find(b'Content-Length:') < 0:
-		received += mi_recv(sock, RECBYTES)
-	ini = received.find(b'Content-Length:') + 16
-	
-	while received[ini:].find(b'\r\n') < 0:
-		received += mi_recv(sock, RECBYTES)
-	fin = received[ini:].find(b'\r\n') + ini
-	
-	body_size = int(received[ini:fin].decode(CHARSET))
-	body = received[received.find(b'\r\n\r\n'):]
-	while len(body) < body_size:
-		body += mi_recv(sock, RECBYTES)
+	for (field, value) in re.findall(r'(.+): (.+)', header):
+		dict_header[field] = value
 
-	print(body.decode(CHARSET))
-
-
+	return dict_header
 
 
 if __name__ == '__main__':
-	if len(sys.argv) > 2:
-		direccion = sys.argv[1]
-		recurso = sys.argv[2]
-		if len(sys.argv) > 4:
-			requerir(direccion, recurso, sys.argv[4])
+	if len(sys.argv) > 1:
+		if len(sys.argv) > 3:
+			requerir(sys.argv[1], sys.argv[3])
 		else:
-			requerir(direccion, recurso)
+			requerir(sys.argv[1])
