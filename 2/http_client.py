@@ -68,8 +68,7 @@ def requerir(url, proxy = ''):
 			while len(body) < cont_len:
 				body += mi_recv(sock, RECBYTES).decode(CHARSET)		
 
-
-
+		# Mostrar el payload
 		print(body)
 
 

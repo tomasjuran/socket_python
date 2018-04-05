@@ -608,3 +608,43 @@ CF-RAY: -
 
 ----------------------------------------
 
+[2018-04-05 13:34:59.996775]
+[Solicitud]
+GET / HTTP/1.1
+Host: www.mediafire.com
+
+[Respuesta]
+HTTP/1.1 301 Moved Permanently
+Date: Thu, 05 Apr 2018 16:34:59 GMT
+Content-Type: text/html
+Transfer-Encoding: chunked
+Connection: keep-alive
+Set-Cookie: __cfduid=d1dd6d55eeaf3c0645fb3e71a2ddd33b11522946099; expires=Fri, 05-Apr-19 16:34:59 GMT; path=/; domain=.mediafire.com; HttpOnly
+Set-Cookie: ukey=6z8nxy56x6yw9ns990ignrl39b08n46x; expires=Thu, 05-Mar-2020 16:34:59 GMT; Max-Age=60480000; path=/; domain=.mediafire.com; httponly
+Location: https://www.mediafire.com/
+Pragma: no-cache
+Expires: 0
+Cache-Control: no-cache, no-store, must-revalidate, max-age=0
+Cache-Control: post-check=0, pre-check=0
+Access-Control-Allow-Origin: *
+Server: cloudflare
+CF-RAY: 406d6ce00766678b-EZE
+
+----------------------------------------
+
+[2018-04-05 13:35:00.032890]
+[Solicitud]
+GET / HTTP/1.1
+Host: www.mediafire.com
+
+[Respuesta]
+HTTP/1.1 400 Bad Request
+Server: cloudflare
+Date: Thu, 05 Apr 2018 16:35:00 GMT
+Content-Type: text/html
+Content-Length: 269
+Connection: close
+CF-RAY: -
+
+----------------------------------------
+
