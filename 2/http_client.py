@@ -1,6 +1,7 @@
 import sys
-import re
 import socket
+import re
+from urllib.parse import urlparse
 from datetime import datetime
 from mi_sock import *
 
@@ -38,15 +39,31 @@ def requerir(url, proxy = ''):
 		while received.find('\r\n\r\n') < 0:
 			received += mi_recv(sock, RECBYTES).decode(CHARSET)
 		
-		(header, body) = received.split('\r\n\r\n')
+		header, body = received.split('\r\n\r\n', 1)
 
 		log_header(mensaje, header)
 
 		dict_header = procesar_header(header)
 
+		# Si se está redireccionando
+		status_line = header.split('\r\n', 1)[0]
+		[status_code] = re.findall('\d{3}', status_line)
+		if int(status_code) in range(300, 399):
+			redir_url = dict_header.get('Location', None)
+			if redir_url:
+				print('Redirección a ' + redir_url)
+				requerir(redir_url, proxy)
+				return 0
+			else:
+				error = ('Se encontró la línea de estado\n'
+						 + status_line + '\ny se intentó una redirección,'
+						 + ' pero el header no contenía el campo "Location"')
+				raise Exception(error)
+
+
 		# Si queda payload por recuperar
 		cont_len = dict_header.get('Content-Length', None)
-		if cont_len != None:
+		if cont_len:
 			cont_len = int(cont_len)
 			while len(body) < cont_len:
 				body += mi_recv(sock, RECBYTES).decode(CHARSET)		
@@ -55,19 +72,32 @@ def requerir(url, proxy = ''):
 
 		print(body)
 
+
+
 def procesar_entrada(url, proxy):
 	"""Devuelve el host, puerto y recurso extraídos de la url y el proxy"""
 	if proxy:
 		[(host, port)] = re.findall(r'(.+?):(\d+)', proxy)
+		port = int(port)
 		recurso = url
 	else:
-		[(proto, host, recurso)] = re.findall(r'(\w+)://(.+?)/(.+)', url)
-		if proto == 'https':
+		if not re.match(r'^https?://', url):
+			url = 'http://' + url
+		
+		urlp = urlparse(url)
+
+		host = urlp.netloc
+		if urlp.scheme == 'https':
 			port = HTTPS_PORT
 		else:
 			port = HTTP_PORT
+		
+		recurso = urlp.path
+		if not recurso:
+			recurso = '/'
 
-	return (host, port, '/' + recurso)
+
+	return host, port, recurso
 
 
 
@@ -83,7 +113,7 @@ Host: ' + host + '\r\n\r\n'
 def procesar_header(header):
 	"""Devuelve un diccionario con campo:valor para cada campo del header"""
 	dict_header = {}
-	for (field, value) in re.findall(r'(.+): (.+)', header):
+	for (field, value) in re.findall(r'(.+): (.+)\r\n', header):
 		dict_header[field] = value
 	return dict_header
 
